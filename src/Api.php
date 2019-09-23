@@ -278,14 +278,15 @@ class Api {
 
 	/**
 	 * Get all Groups
+	 * @param String $name
 	 * @param String $page_size
 	 * @param String $page
 	 * @return stdObject
 	 */
-	public function get_groups($page_size = nil, $page = 1){
+	public function get_groups($name = nil, $page_size = nil, $page = 1){
 		$client = new \GuzzleHttp\Client();
 
-		$response = $client->get($this->api_endpoint.'issuer/all_groups?page_size=' . $page_size . '&page=' . $page, array('headers' =>  array('Authorization' => 'Token token="'.$this->getAPIKey().'"')));
+		$response = $client->get($this->api_endpoint.'issuer/all_groups?$name=' . $name . '&page_size=' . $page_size . '&page=' . $page, array('headers' =>  array('Authorization' => 'Token token="'.$this->getAPIKey().'"')));
 
 		$result = json_decode($response->getBody());
 		return $result;
@@ -353,7 +354,25 @@ class Api {
 
         $result = json_decode($response->getBody());
         return $result;
-    }
+		}
+		
+
+		/**
+		 * Get specific design by id
+		 *
+		 * @param [int] $design_id
+		 * @return void
+		 */
+		public function get_design($design_id)
+		{
+			$client = new \GuzzleHttp\Client();
+
+			$response = $client->get($this->api_endpoint . 'designs/' . $design_id, array('headers' =>  array('Authorization' => 'Token token="' . $this->getAPIKey() . '"')));
+
+			$result = json_decode($response->getBody());
+			return $result;
+		}
+
 
     /**
      * Creates an evidence item on a given credential. This is a general method used by more specific evidence item creations.
